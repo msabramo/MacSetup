@@ -3,12 +3,22 @@
 # Turn on extended globbing and programmable completion
 shopt -s extglob progcomp
 
+# If a glob doesn't match anything, just return nothing; don't try to interpret it literally
+shopt -s nullglob
+
 banner()
 {
     echo "----------------------------------------------------------------"
     echo "$@"
     echo "----------------------------------------------------------------"
     echo
+}
+
+copy_to_home()
+{
+    for f in $PLUGIN_DIR/dotfiles/* $PLUGIN_DIR/dotfiles/.[^.]*; do
+        cp -prv $f ~
+    done
 }
 
 [ -n "$MACINSTALL_PLUGINS_DIR" ] || MACINSTALL_PLUGINS_DIR=scripts.d
@@ -24,12 +34,17 @@ if [[ -d $MACINSTALL_PLUGINS_DIR && -r $MACINSTALL_PLUGINS_DIR && -x $MACINSTALL
             . "$i"
             echo
             banner "END executing: $i"
-        elif [[ -d $i && -f $i/init.sh ]]; then
-            SCRIPT=$i/init.sh
-            banner "BEGIN Dir: $SCRIPT"
-            . "$SCRIPT"
+        elif [[ -d $i ]]; then
+            PLUGIN_DIR=$i
+            banner "BEGIN Dir: $PLUGIN_DIR"
+            if [[ -f $i/init.sh ]]; then
+                SCRIPT=$i/init.sh
+                . "$SCRIPT"
+            else
+                copy_to_home
+            fi
             echo
-            banner "END Dir: $SCRIPT"
+            banner "END Dir: $PLUGIN_DIR"
         fi
     done
 fi
