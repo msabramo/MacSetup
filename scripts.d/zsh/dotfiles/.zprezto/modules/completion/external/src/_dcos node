@@ -1,0 +1,305 @@
+#compdef dcos node
+
+_message_next_arg()
+{
+    argcount=0
+    for word in "${words[@][2,-1]}"
+    do
+        if [[ $word != -* ]] ; then
+            ((argcount++))
+        fi
+    done
+    if [[ $argcount -le ${#myargs[@]} ]] ; then
+        _message -r $myargs[$argcount]
+        if [[ $myargs[$argcount] =~ ".*file.*" || $myargs[$argcount] =~ ".*path.*" ]] ; then
+            _files
+        fi
+    fi
+}
+
+_dcos node ()
+{
+    local context state state_descr line
+    typeset -A opt_args
+
+    _arguments -C \
+        ':command:->command' \
+        '*::options:->options'
+
+    case $state in
+        (command)
+            local -a subcommands
+            subcommands=(
+				'node'
+            )
+            _values 'dcos node' $subcommands
+        ;;
+
+        (options)
+            case $line[1] in
+                node)
+                    _dcos node-node
+                ;;
+            esac
+        ;;
+    esac
+
+}
+
+_dcos node-node ()
+{
+    local context state state_descr line
+    typeset -A opt_args
+
+    _arguments -C \
+        ':command:->command' \
+		'(-h)-h' \
+		'(--help)--help' \
+		'(--info)--info' \
+		'(--json)--json' \
+		'(--field=-)--field=-' \
+		'(--version)--version' \
+        '*::options:->options'
+
+    case $state in
+        (command)
+            local -a subcommands
+            subcommands=(
+				'diagnostics'
+				'list-components'
+				'log'
+				'metrics'
+				'ssh'
+            )
+            _values 'dcos node node' $subcommands
+        ;;
+
+        (options)
+            case $line[1] in
+                diagnostics)
+                    _dcos node-node-diagnostics
+                ;;
+                list-components)
+                    _dcos node-node-list-components
+                ;;
+                log)
+                    _dcos node-node-log
+                ;;
+                metrics)
+                    _dcos node-node-metrics
+                ;;
+                ssh)
+                    _dcos node-node-ssh
+                ;;
+            esac
+        ;;
+    esac
+
+}
+
+_dcos node-node-diagnostics ()
+{
+    local context state state_descr line
+    typeset -A opt_args
+
+    _arguments -C \
+        ':command:->command' \
+		'(--list)--list' \
+		'(--status)--status' \
+		'(--cancel)--cancel' \
+		'(--json)--json' \
+        '*::options:->options'
+
+    case $state in
+        (command)
+            local -a subcommands
+            subcommands=(
+				'create'
+				'delete'
+				'download'
+            )
+            _values 'dcos node node diagnostics' $subcommands
+        ;;
+
+        (options)
+            case $line[1] in
+                create)
+                    _dcos node-node-diagnostics-create
+                ;;
+                delete)
+                    _dcos node-node-diagnostics-delete
+                ;;
+                download)
+                    _dcos node-node-diagnostics-download
+                ;;
+            esac
+        ;;
+    esac
+
+}
+
+_dcos node-node-diagnostics-create ()
+{
+    local context state state_descr line
+    typeset -A opt_args
+
+    if [[ $words[$CURRENT] == -* ]] ; then
+        _arguments -C \
+        ':command:->command' \
+
+    else
+        myargs=('<nodes>')
+        _message_next_arg
+    fi
+}
+
+_dcos node-node-diagnostics-delete ()
+{
+    local context state state_descr line
+    typeset -A opt_args
+
+    if [[ $words[$CURRENT] == -* ]] ; then
+        _arguments -C \
+        ':command:->command' \
+
+    else
+        myargs=('<bundle>')
+        _message_next_arg
+    fi
+}
+
+_dcos node-node-diagnostics-download ()
+{
+    local context state state_descr line
+    typeset -A opt_args
+
+    if [[ $words[$CURRENT] == -* ]] ; then
+        _arguments -C \
+        ':command:->command' \
+		'(--location=-)--location=-' \
+
+    else
+        myargs=('<bundle>')
+        _message_next_arg
+    fi
+}
+
+_dcos node-node-list-components ()
+{
+    local context state state_descr line
+    typeset -A opt_args
+
+    _arguments -C \
+        ':command:->command' \
+		'(--leader)--leader' \
+		'(--mesos-id=-)--mesos-id=-' \
+		'(--json)--json' \
+        
+}
+
+_dcos node-node-log ()
+{
+    local context state state_descr line
+    typeset -A opt_args
+
+    _arguments -C \
+        ':command:->command' \
+		'(--follow)--follow' \
+		'(--lines=-)--lines=-' \
+		'(--leader)--leader' \
+		'(--mesos-id=-)--mesos-id=-' \
+		'(--component=-)--component=-' \
+		'(--filter=-)--filter=-' \
+        
+}
+
+_dcos node-node-metrics ()
+{
+    local context state state_descr line
+    typeset -A opt_args
+
+    _arguments -C \
+        ':command:->command' \
+        '*::options:->options'
+
+    case $state in
+        (command)
+            local -a subcommands
+            subcommands=(
+				'details'
+				'summary'
+            )
+            _values 'dcos node node metrics' $subcommands
+        ;;
+
+        (options)
+            case $line[1] in
+                details)
+                    _dcos node-node-metrics-details
+                ;;
+                summary)
+                    _dcos node-node-metrics-summary
+                ;;
+            esac
+        ;;
+    esac
+
+}
+
+_dcos node-node-metrics-details ()
+{
+    local context state state_descr line
+    typeset -A opt_args
+
+    if [[ $words[$CURRENT] == -* ]] ; then
+        _arguments -C \
+        ':command:->command' \
+		'(--json)--json' \
+
+    else
+        myargs=('<mesos-id>')
+        _message_next_arg
+    fi
+}
+
+_dcos node-node-metrics-summary ()
+{
+    local context state state_descr line
+    typeset -A opt_args
+
+    if [[ $words[$CURRENT] == -* ]] ; then
+        _arguments -C \
+        ':command:->command' \
+		'(--json)--json' \
+
+    else
+        myargs=('<mesos-id>')
+        _message_next_arg
+    fi
+}
+
+_dcos node-node-ssh ()
+{
+    local context state state_descr line
+    typeset -A opt_args
+
+    if [[ $words[$CURRENT] == -* ]] ; then
+        _arguments -C \
+        ':command:->command' \
+		'(--leader)--leader' \
+		'(--mesos-id=-)--mesos-id=-' \
+		'(--private-ip=-)--private-ip=-' \
+		'(--config-file=-)--config-file=-' \
+		'(--user=-)--user=-' \
+		'(--master-proxy)--master-proxy' \
+		'(--option=-)--option=-' \
+		'(--proxy-ip=-)--proxy-ip=-' \
+
+    else
+        myargs=('<command>')
+        _message_next_arg
+    fi
+}
+
+
+_dcos node "$@"
