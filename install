@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Turn on extended globbing and programmable completion
+shopt -s extglob progcomp
+
+banner()
+{
+    echo "----------------------------------------------------------------"
+    echo "$@"
+    echo "----------------------------------------------------------------"
+    echo
+}
+
+[ -n "$MACINSTALL_PLUGINS_DIR" ] || MACINSTALL_PLUGINS_DIR=scripts.d
+
+if [[ -d $MACINSTALL_PLUGINS_DIR && -r $MACINSTALL_PLUGINS_DIR && -x $MACINSTALL_PLUGINS_DIR ]]; then
+    for i in $(LC_ALL=C command ls "$MACINSTALL_PLUGINS_DIR"); do
+        i=$MACINSTALL_PLUGINS_DIR/$i
+        if [[ ${i##*/} == @(*~|*.bak|*.swp|\#*\#|*.dpkg*|*.rpm@(orig|new|save)|Makefile*) || ! -r $i ]]; then
+            continue
+        fi
+        if [[ -f $i ]]; then
+            banner "BEGIN executing: $i"
+            . "$i"
+            echo
+            banner "END executing: $i"
+        elif [[ -d $i && -f $i/init.sh ]]; then
+            SCRIPT=$i/init.sh
+            banner "BEGIN Dir: $SCRIPT"
+            . "$SCRIPT"
+            echo
+            banner "END Dir: $SCRIPT"
+        fi
+    done
+fi
+
+# Local variables:
+# mode: shell-script
+# sh-basic-offset: 4
+# sh-indent-comment: t
+# indent-tabs-mode: nil
+# End:
+# ex: ts=4 sw=4 et filetype=sh
