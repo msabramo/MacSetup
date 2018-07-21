@@ -30,6 +30,7 @@ libxmlsec1
 libyaml
 nodejs
 pandoc
+pipenv
 pkg-config
 pypy
 python
