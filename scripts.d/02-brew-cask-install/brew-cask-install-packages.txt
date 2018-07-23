@@ -2,6 +2,7 @@
 alfred
 atom
 caffeine
+captin
 chromium
 docker-toolbox
 dropbox
@@ -11,8 +12,14 @@ flux
 google-chrome
 iterm2
 jing
+karabiner-elements
+kubernetic
 macvim
+minikube
+obs
 omnifocus
+onedrive
+sequel-pro
 slack
 slate
 vagrant
