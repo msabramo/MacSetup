@@ -32,6 +32,7 @@ nodejs
 pandoc
 pipenv
 pkg-config
+pyenv
 pypy
 python
 python3
