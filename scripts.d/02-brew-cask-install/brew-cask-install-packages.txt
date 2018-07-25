@@ -1,4 +1,5 @@
 1password
+adium
 alfred
 atom
 caffeine
@@ -10,6 +11,7 @@ evernote
 firefox
 flux
 google-chrome
+google-cloud-sdk
 iterm2
 jing
 karabiner-elements
