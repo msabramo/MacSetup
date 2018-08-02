@@ -1,5 +1,0 @@
-bower
-coffee-script
-grunt
-gulp-cli
-node-gyp
